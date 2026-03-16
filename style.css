@@ -1,0 +1,212 @@
+:root {
+    --primary: #ff4d4d; /* Original accent color */
+    --secondary: #8b0000;
+    --dark: #0a0a0a;
+    --light: #f5f5f5;
+    --glass: rgba(0, 0, 0, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--light);
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Prevent horizontal scrolling during animation */
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden; /* Important to hide the edges of the moving image */
+    position: relative;
+    
+    /* Base background */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('image_c9c39d.png');
+    background-size: 110%; /* Slightly larger so it can move without showing white edges */
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Smooth transition for the 'click' movement */
+    transition: background-position 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                background-image 0.8s ease-in-out;
+
+    /* Continuous slow 'breathing' animation */
+    animation: moveBackground 20s infinite alternate ease-in-out;
+}
+
+/* This makes the background slowly zoom and pan on its own */
+@keyframes moveBackground {
+    0% { background-size: 110%; background-position: center; }
+    100% { background-size: 125%; background-position: top right; }
+}
+
+/* Class to trigger extra colorful movement via JS */
+.hero.active-move {
+    filter: hue-rotate(45deg); /* Adds a colorful shift */
+}
+
+/* Special class activated via JavaScript click event */
+.hero.colorful-click {
+    /* Define a new colorful gradient when this class is active */
+    background-image: 
+        linear-gradient(135deg, rgba(255, 77, 77, 0.4), rgba(58, 123, 213, 0.4)), 
+        url('image_c9c39d.png'); 
+}
+
+/* Particle layer for added visual flair in colorful mode */
+.colorful-click::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* Use CSS gradients for simple, efficient particles */
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1; /* Place particles behind content */
+}
+
+.hero.colorful-click::before {
+    opacity: 1; /* Fade-in particles when colorful mode is active */
+}
+
+/* Ensure hero content remains above the dynamic background effects */
+.hero-content {
+    z-index: 10;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    letter-spacing: 2px;
+}
+
+.highlight {
+    color: var(--primary);
+    transition: color 0.5s ease; /* Ensure dynamic changes look good */
+}
+
+/* Glassmorphism for Skill Cards - Blends well with dynamic backgrounds */
+.skill-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px); /* Blurs the background behind the card */
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s, border 0.3s, box-shadow 0.3s, opacity 0.6s ease-out; /* Match original JS transitions */
+    border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+.skill-card:hover {
+    transform: translateY(-10px);
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 20px rgba(255, 77, 77, 0.3);
+}
+
+.skill-card i {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+/* Dynamic button adjustments based on colorful mode */
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: var(--secondary);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s, transform 0.3s;
+    border: 1px solid var(--primary);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+    background: var(--primary);
+    color: var(--dark);
+    transform: translateY(-3px);
+}
+
+/* --- Rest of previous styling --- */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%;
+    background: rgba(18, 18, 18, 0.95);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--primary);
+}
+
+section {
+    padding: 100px 10%;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+}
+
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+#contact {
+    background: #1a1a1a;
+    text-align: center;
+}
+
+.contact-info p {
+    font-size: 1.2rem;
+    margin: 15px 0;
+}
+
+.socials a {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: var(--dark);
+    font-size: 0.9rem;
+    border-top: 1px solid #333;
+}
